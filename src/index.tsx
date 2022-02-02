@@ -1,12 +1,19 @@
 import { render } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import App from "./App";
+import { StepsStyleConfig as Steps } from "chakra-ui-steps";
+
+const theme = extendTheme({
+  components: {
+    Steps,
+  },
+});
 
 const rootElement = document.getElementById("root");
 render(
   <BrowserRouter>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
   </BrowserRouter>,

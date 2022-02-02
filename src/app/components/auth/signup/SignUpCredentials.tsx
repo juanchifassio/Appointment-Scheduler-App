@@ -1,24 +1,54 @@
-import { useState } from "react";
+import { useState, FC } from "react";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
+  Button,
   FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
   IconButton,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
 import { AiOutlineEye } from "react-icons/ai";
 
-const SignUpCredentials = () => {
-  const [pass, setPass] = useState<string | null>(null);
-  const [passConfirm, setPassConfirm] = useState<string | null>(null);
+interface Props {
+  onclick: Function;
+}
+
+const SignUpCredentials: FC<Props> = (props) => {
+  const [pass, setPass] = useState<string>("");
+  const [passConfirm, setPassConfirm] = useState<string>("");
   const [showPass, setShowPass] = useState<boolean>(false);
   const [showPassConfirm, setShowPassConfirm] = useState<boolean>(false);
 
+  const register = () => {
+    if (pass === passConfirm) {
+      if (pass.length > 5 && stringContainsNumber(pass) === false) {
+        console.log("good");
+        props.onclick();
+      } else {
+        console.log(
+          "Password must be at least 6 character long and contain a number"
+        );
+      }
+    } else {
+      console.log("Passwords dont match");
+    }
+  };
+
+  const stringContainsNumber = (string: string) => {
+    let matchPattern = string.match(/\d+/g);
+    if (matchPattern != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <>
+    <Box mx={300} mt={50}>
       <FormControl>
         <FormLabel htmlFor="email">Email address</FormLabel>
         <Input id="email" type="email" />
@@ -47,8 +77,7 @@ const SignUpCredentials = () => {
           </InputRightElement>
         </InputGroup>
         <FormHelperText my={1} mb={2}>
-          Passwords must be at least 6 characters, an uppercase letter and a
-          number.
+          Passwords must be at least 6 characters and a number.
         </FormHelperText>
         <FormLabel htmlFor="ConfirmPassword">Confirm Password</FormLabel>
         <InputGroup>
@@ -75,7 +104,12 @@ const SignUpCredentials = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-    </>
+      <Flex justify={"center"} my={10}>
+        <Button onClick={register} variant="ghost">
+          Next
+        </Button>
+      </Flex>
+    </Box>
   );
 };
 

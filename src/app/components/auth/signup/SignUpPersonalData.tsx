@@ -1,42 +1,128 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   FormControl,
   FormLabel,
   Box,
-  FormHelperText,
   Input,
   Select,
   Textarea,
   Flex,
   Button,
+  useToast,
 } from "@chakra-ui/react";
+import { services } from "../../../data/ServicesData";
 
 interface Props {
   onclick: Function;
+  error: Function;
 }
 
 const SignUpPersonalData: FC<Props> = (props) => {
-  const submitPD = () => {
-    props.onclick();
+  const [first, setFirst] = useState<string>("");
+  const [last, setLast] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [otherService, setOtherService] = useState<string>("");
+  const [serviceDesc, setServiceDesc] = useState<string>("");
+
+  const toast = useToast();
+
+  const toastMsg = () => {
+    toast({
+      title: "Successfully saved personal data.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
   };
+
+  const toastErrorMsg = (msg: string) => {
+    toast({
+      title: msg,
+      status: "error",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
+  const submitPD = () => {
+    if (
+      first !== "" &&
+      last !== "" &&
+      selectedService !== "" &&
+      serviceDesc !== ""
+    ) {
+      if (selectedService !== "Other") {
+        toastMsg();
+        props.onclick();
+      } else if (selectedService === "Other" && otherService !== "") {
+        toastMsg();
+        props.onclick();
+      } else {
+        toastErrorMsg("You must fill all  fields.");
+        props.error("error");
+      }
+    } else {
+      toastErrorMsg("You must fill all  fields.");
+      props.error("error");
+    }
+  };
+
+  useEffect(() => {
+    props.error("loading");
+  }, []);
+
   return (
     <Box mx={200} mt={50}>
       <FormControl>
         <FormLabel htmlFor="first-name">First name</FormLabel>
-        <Input id="first-name" placeholder="First name" isRequired />
+        <Input
+          id="first-name"
+          placeholder="First name"
+          onChange={(e) => {
+            setFirst(e.target.value);
+          }}
+        />
         <FormLabel htmlFor="last-name">Last name</FormLabel>
-        <Input id="last-name" placeholder="Last name" isRequired />
+        <Input
+          id="last-name"
+          placeholder="Last name"
+          onChange={(e) => {
+            setLast(e.target.value);
+          }}
+        />
         <FormLabel htmlFor="service">Service</FormLabel>
-        <Select>
-          <option value="option1">Service 1</option>
-          <option value="option2">Service 2</option>
-          <option value="option3">Service 3</option>
+        <Select
+          onChange={(e) => {
+            setSelectedService(e.target.value);
+          }}
+        >
+          {services.map((service) => {
+            return (
+              <option key={service.service} value={service.service}>
+                {service.service}
+              </option>
+            );
+          })}
         </Select>
+        {selectedService === "Other" && (
+          <>
+            <FormLabel htmlFor="service">What service do you offer?</FormLabel>
+            <Input
+              id="service"
+              onChange={(e) => {
+                setOtherService(e.target.value);
+              }}
+            />
+          </>
+        )}
         <FormLabel htmlFor="service-description">Service Description</FormLabel>
         <Textarea
           id="service-description"
-          placeholder="Service Description"
+          placeholder="Service Description must be 100 characters long"
           maxH={100}
+          onChange={(e) => {
+            setServiceDesc(e.target.value);
+          }}
         />
       </FormControl>
       <Flex justify={"center"} my={10}>

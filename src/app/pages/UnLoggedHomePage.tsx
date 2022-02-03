@@ -3,7 +3,7 @@ import Login from "../components/auth/Login";
 
 const UnLoggedHomePage = () => {
   return (
-    <>
+    <Box minH={"91vh"}>
       <Box>this is the UnLoggedHomePage</Box>
       <HStack>
         <Heading>THIS WILL BE A PHOTO WITH A DESCRIPTION</Heading>
@@ -18,7 +18,7 @@ const UnLoggedHomePage = () => {
           </Box>
         </Stack>
       </HStack>
-    </>
+    </Box>
   );
 };
 

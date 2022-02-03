@@ -1,3 +1,4 @@
+import Footer from "./app/components/footer/footer";
 import Navbar from "./app/components/header/Navbar";
 import AppRoutes from "./AppRoutes";
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <Navbar />
       <AppRoutes />
+      <Footer />
     </>
   );
 }

@@ -1,21 +1,21 @@
-import { useState, FC } from "react";
-import { Box, Flex, Button, HStack, Spacer } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
 import SignUpCredentials from "../../components/auth/signup/SignUpCredentials";
 import SignUpPersonalData from "../../components/auth/signup/SignUpPersonalData";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
-
-interface Param {
-  func: () => void;
-}
+import SignUpSchedule from "../../components/auth/signup/SignUpSchedule";
 
 const SignUpPage = () => {
-  const { nextStep, prevStep, reset, activeStep } = useSteps({
+  const { nextStep, reset, activeStep } = useSteps({
     initialStep: 0,
   });
+  const [isLoading, setIsLoading] = useState<"loading" | "error">("loading");
 
-  const signup = <SignUpCredentials onclick={nextStep} />;
-  const personalInfo = <SignUpPersonalData onclick={nextStep} />;
-  const schedule = <SignUpCredentials onclick={nextStep} />;
+  const signup = <SignUpCredentials onclick={nextStep} error={setIsLoading} />;
+  const personalInfo = (
+    <SignUpPersonalData onclick={nextStep} error={setIsLoading} />
+  );
+  const schedule = <SignUpSchedule error={setIsLoading} />;
 
   const steps = [
     { label: "Sign Up", content: signup },
@@ -24,22 +24,15 @@ const SignUpPage = () => {
   ];
 
   return (
-    <Box mx={150}>
+    <Box mx={150} minH={"86vh"}>
       <Flex flexDir="column" width="100%" my={50}>
-        <Steps activeStep={activeStep}>
+        <Steps activeStep={activeStep} state={isLoading}>
           {steps.map(({ label, content }) => (
             <Step label={label} key={label}>
               {content}
             </Step>
           ))}
         </Steps>
-        {activeStep === steps.length ? (
-          <Flex p={4}>
-            <Button mx="auto" size="sm" onClick={reset}>
-              Reset
-            </Button>
-          </Flex>
-        ) : null}
       </Flex>
     </Box>
   );

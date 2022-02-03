@@ -1,0 +1,15 @@
+export const services = [
+  { service: "a" },
+  { service: "b" },
+  { service: "c" },
+  { service: "d" },
+  { service: "e" },
+  { service: "f" },
+  { service: "g" },
+  { service: "h" },
+  { service: "i" },
+  { service: "j" },
+  { service: "k" },
+  { service: "l" },
+  { service: "Other" },
+];

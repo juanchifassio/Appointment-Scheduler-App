@@ -1,13 +1,16 @@
 import Footer from "./app/components/footer/footer";
 import Navbar from "./app/components/header/Navbar";
 import AppRoutes from "./AppRoutes";
+import { AuthContextProvider } from "./app/components/contexts/AuthContext";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <AppRoutes />
-      <Footer />
+      <AuthContextProvider>
+        <Navbar />
+        <AppRoutes />
+        <Footer />
+      </AuthContextProvider>
     </>
   );
 }

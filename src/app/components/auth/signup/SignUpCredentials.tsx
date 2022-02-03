@@ -14,6 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineEye } from "react-icons/ai";
 import { stringContainsNumber } from "../../functions/stringContainsNumber";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../firebase";
+import { getDatabase, ref, set } from "firebase/database";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface Props {
   onclick: Function;
@@ -28,6 +32,7 @@ const SignUpCredentials: FC<Props> = (props) => {
   const [showPassConfirm, setShowPassConfirm] = useState<boolean>(false);
 
   const toast = useToast();
+  const currentUser = useAuth();
 
   const toastErrorMsg = (msg: string) => {
     toast({
@@ -46,6 +51,9 @@ const SignUpCredentials: FC<Props> = (props) => {
           stringContainsNumber(pass) === true &&
           pass.match(/[a-z]/i)
         ) {
+          createUserWithEmailAndPassword(auth, email, pass).then((res) => {
+            set(ref(getDatabase(), "users/" + res.user.uid), {});
+          });
           toast({
             title: "User created successfuly!",
             status: "success",

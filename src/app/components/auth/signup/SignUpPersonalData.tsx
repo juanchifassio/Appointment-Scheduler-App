@@ -11,6 +11,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { services } from "../../../data/ServicesData";
+import { useAuth } from "../../contexts/AuthContext";
+import { getDatabase, ref, set } from "firebase/database";
 
 interface Props {
   onclick: Function;
@@ -20,12 +22,13 @@ interface Props {
 const SignUpPersonalData: FC<Props> = (props) => {
   const [first, setFirst] = useState<string>("");
   const [last, setLast] = useState<string>("");
-  const [selectedService, setSelectedService] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("a");
   const [otherService, setOtherService] = useState<string>("");
   const [serviceDesc, setServiceDesc] = useState<string>("");
 
   const toast = useToast();
-
+  const { currentUser } = useAuth();
+  console.log(currentUser.uid);
   const toastMsg = () => {
     toast({
       title: "Successfully saved personal data.",
@@ -52,9 +55,23 @@ const SignUpPersonalData: FC<Props> = (props) => {
       serviceDesc !== ""
     ) {
       if (selectedService !== "Other") {
+        set(ref(getDatabase(), "users/" + currentUser.uid), {
+          fname: first,
+          lname: last,
+          email: currentUser.email,
+          service: selectedService,
+          servicedesc: serviceDesc,
+        });
         toastMsg();
         props.onclick();
       } else if (selectedService === "Other" && otherService !== "") {
+        set(ref(getDatabase(), "users/" + currentUser.uid), {
+          fname: first,
+          lname: last,
+          email: currentUser.email,
+          service: otherService,
+          servicedesc: serviceDesc,
+        });
         toastMsg();
         props.onclick();
       } else {

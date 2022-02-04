@@ -28,7 +28,7 @@ const SignUpPersonalData: FC<Props> = (props) => {
 
   const toast = useToast();
   const { currentUser } = useAuth();
-  console.log(currentUser.uid);
+
   const toastMsg = () => {
     toast({
       title: "Successfully saved personal data.",
@@ -56,6 +56,7 @@ const SignUpPersonalData: FC<Props> = (props) => {
     ) {
       if (selectedService !== "Other") {
         set(ref(getDatabase(), "users/" + currentUser.uid), {
+          scheduleID: currentUser.uid,
           fname: first,
           lname: last,
           email: currentUser.email,

@@ -1,4 +1,8 @@
-export const asd = (interval: number, startTime: number, endTime: number) => {
+export const getIntervals = (
+  interval: number,
+  startTime: number,
+  endTime: number
+) => {
   var x = interval; //minutes interval
   var times = []; // time array
   var tt = startTime; // start time
@@ -10,6 +14,6 @@ export const asd = (interval: number, startTime: number, endTime: number) => {
     times[i] = { time: `${hh}:${mm}` };
     tt = tt + x;
   }
-
   console.log(times);
+  return times;
 };

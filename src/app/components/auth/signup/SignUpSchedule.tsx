@@ -14,8 +14,11 @@ import {
 import { appointmentsLength } from "../../../data/AppointmentsLength";
 import { Weekdays } from "../../../data/Weekdays";
 import { Hours } from "../../../data/Hours";
-import { asd } from "../../functions/asd";
+import { getIntervals } from "../../functions/getIntervals";
+import { getIntervalsObject } from "../../functions/getIntervalsObject";
 import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, set } from "firebase/database";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface Props {
   error: Function;
@@ -31,6 +34,7 @@ const SignUpSchedule: FC<Props> = (props) => {
 
   const toast = useToast();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const toastErrorMsg = (error: string) => {
     toast({
@@ -44,14 +48,26 @@ const SignUpSchedule: FC<Props> = (props) => {
   const submitSchedule = () => {
     if (appointmentLength !== 0 && startHour !== 0 && endHour > startHour) {
       if (startWeekday < endWeekday) {
-        asd(appointmentLength, startHour, endHour);
+        set(
+          ref(getDatabase(), "users/" + currentUser.uid + "/appointmentsInfo"),
+          {
+            appointmentLength: appointmentLength,
+            startHour: startHour / 60,
+            endHour: endHour / 60,
+            startWeekday: startWeekday,
+            endWeekday: endWeekday,
+          }
+        );
+        var times = getIntervals(appointmentLength, startHour, endHour);
+        var obj = getIntervalsObject(times);
+        set(ref(getDatabase(), "users/" + currentUser.uid + "/schedule"), obj);
         toast({
           title: "Successfully saved schedule.",
           status: "success",
           duration: 2000,
           isClosable: true,
         });
-        navigate("/profile");
+        navigate("/");
       } else {
         toastErrorMsg("Select a correct weekday interval");
       }

@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import App from "./App";
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
+import { AuthContextProvider } from "./app/components/contexts/AuthContext";
 
 const theme = extendTheme({
   components: {
@@ -14,7 +15,9 @@ const rootElement = document.getElementById("root");
 render(
   <BrowserRouter>
     <ChakraProvider theme={theme}>
-      <App />
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
     </ChakraProvider>
   </BrowserRouter>,
   rootElement

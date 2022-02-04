@@ -2,7 +2,7 @@ import { Box, Heading } from "@chakra-ui/react";
 
 const UpdateSchedulePage = () => {
   return (
-    <Box>
+    <Box h={"89vh"}>
       <Heading>THIS WILL BE THE UPDATE SCHEDULE PAGE</Heading>
     </Box>
   );

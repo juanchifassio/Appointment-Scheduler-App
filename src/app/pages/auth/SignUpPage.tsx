@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
+import { Step, Steps, useSteps } from "chakra-ui-steps";
 import SignUpCredentials from "../../components/auth/signup/SignUpCredentials";
 import SignUpPersonalData from "../../components/auth/signup/SignUpPersonalData";
-import { Step, Steps, useSteps } from "chakra-ui-steps";
 import SignUpSchedule from "../../components/auth/signup/SignUpSchedule";
 
 const SignUpPage = () => {

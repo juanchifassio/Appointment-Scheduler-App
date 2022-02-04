@@ -1,16 +1,15 @@
+import { useAuth } from "./app/components/contexts/AuthContext";
 import Footer from "./app/components/footer/footer";
 import Navbar from "./app/components/header/Navbar";
 import AppRoutes from "./AppRoutes";
-import { AuthContextProvider } from "./app/components/contexts/AuthContext";
 
 function App() {
+  const { currentUser } = useAuth();
   return (
     <>
-      <AuthContextProvider>
-        <Navbar />
-        <AppRoutes />
-        <Footer />
-      </AuthContextProvider>
+      {currentUser ? <Navbar /> : null}
+      <AppRoutes />
+      <Footer />
     </>
   );
 }

@@ -32,7 +32,7 @@ const Login = () => {
 
   const toast = useToast();
 
-  const login = async () => {
+  const login = () => {
     if (logInEmail === null || logInPassword === null) {
       toast({
         title: "Credentials not valid",

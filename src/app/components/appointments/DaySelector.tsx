@@ -2,6 +2,7 @@ import { useState, FC } from "react";
 import { Box, Text, Button, useToast } from "@chakra-ui/react";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
+import { set, ref, getDatabase } from "firebase/database";
 
 interface Props {
   sMan: any;
@@ -36,6 +37,13 @@ const DaySelector: FC<Props> = (props) => {
 
   const saveDay = () => {
     if (day !== null) {
+      set(
+        ref(
+          getDatabase(),
+          `users/${props?.sMan.scheduleID}/appointments/${day}`
+        ),
+        {}
+      );
       props.onclick();
     } else {
       toast({

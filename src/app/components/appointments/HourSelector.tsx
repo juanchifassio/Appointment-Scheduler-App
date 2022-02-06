@@ -1,18 +1,22 @@
-import { FC, useState } from "react";
-import { Box, Button, useToast } from "@chakra-ui/react";
+import { FC, useState, useEffect } from "react";
+import { Box, Button, useToast, Text } from "@chakra-ui/react";
 
 interface Props {
   sMan: any;
   onclick: Function;
+  fetchHour: Function;
+  day: string;
 }
 const HourSelector: FC<Props> = (props) => {
   const [editIndex, setEditIndex] = useState<null | number>(null);
+  const [dispHours, setDispHours] = useState<any>([]);
   const [hour, setHour] = useState<String>("");
 
   const toast = useToast();
 
   const saveHour = () => {
     if (hour !== "") {
+      props.fetchHour(hour);
       props.onclick();
     } else {
       toast({
@@ -24,33 +28,48 @@ const HourSelector: FC<Props> = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (props.sMan.appointments[props.day] !== undefined) {
+      var bookedHours = Object.keys(props.sMan.appointments[props.day]);
+      var scheduleHours = Object.values(props.sMan.schedule);
+      var dispHours = scheduleHours.filter((item: any) => {
+        return !bookedHours.includes(item);
+      });
+      setDispHours(dispHours);
+    } else {
+      setDispHours(props.sMan.schedule);
+    }
+  }, []);
+
   return (
     <>
       <Box my={10}>HourSelector</Box>
-      {props.sMan.schedule.map((hour: string, index: number) => {
+      {dispHours.map((hour: string, index: number) => {
         return (
-          <>
-            <Button
-              key={index}
-              mx={2}
-              colorScheme={editIndex === index ? "cyan" : "gray"}
-              onClick={() => {
-                setHour(hour);
-                setEditIndex((editIndex) =>
-                  editIndex === index ? null : index
-                );
-              }}
-            >
-              {hour}
-            </Button>
-          </>
+          <Button
+            key={hour}
+            mx={2}
+            colorScheme={editIndex === index ? "cyan" : "gray"}
+            onClick={() => {
+              setHour(hour);
+              setEditIndex((editIndex) => (editIndex === index ? null : index));
+            }}
+          >
+            {hour}
+          </Button>
         );
       })}
-      <Box my={10}>
-        <Button size="sm" onClick={saveHour}>
-          Next
-        </Button>
-      </Box>
+      {dispHours.length === 0 ? (
+        <Text>There are no available turns</Text>
+      ) : (
+        <>
+          <Box my={10}>
+            <Button size="sm" onClick={saveHour}>
+              Next
+            </Button>
+          </Box>
+        </>
+      )}
     </>
   );
 };

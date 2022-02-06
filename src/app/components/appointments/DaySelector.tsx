@@ -2,15 +2,15 @@ import { useState, FC } from "react";
 import { Box, Text, Button, useToast } from "@chakra-ui/react";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import { set, ref, getDatabase } from "firebase/database";
 
 interface Props {
   sMan: any;
   onclick: Function;
+  fetchDay: Function;
 }
 
 const DaySelector: FC<Props> = (props) => {
-  const [day, setDay] = useState(null);
+  const [day, setDay] = useState<String | null>(null);
   const [dayDisp, setDayDisp] = useState();
 
   const toast = useToast();
@@ -37,13 +37,9 @@ const DaySelector: FC<Props> = (props) => {
 
   const saveDay = () => {
     if (day !== null) {
-      set(
-        ref(
-          getDatabase(),
-          `users/${props?.sMan.scheduleID}/appointments/${day}`
-        ),
-        {}
-      );
+      var formattedDay = day.replaceAll("/", "-");
+      props.fetchDay(formattedDay);
+
       props.onclick();
     } else {
       toast({

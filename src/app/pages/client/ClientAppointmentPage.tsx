@@ -12,12 +12,37 @@ const ClientAppointmentPage = () => {
     initialStep: 0,
   });
   const [serviceMan, setServiceMan] = useState<any>({});
+  const [day, setDay] = useState<any>();
+  const [hour, setHour] = useState<any>();
 
   const { id } = useParams();
 
-  const daySelector = <DaySelector sMan={serviceMan} onclick={nextStep} />;
-  const hourSelector = <HourSelector sMan={serviceMan} onclick={nextStep} />;
-  const Confirm = <AppointmentConfirm sMan={serviceMan} onclick={nextStep} />;
+  const fetchDay = (Day: string) => {
+    setDay(Day);
+  };
+  const fetchHour = (Hour: string) => {
+    setHour(Hour);
+  };
+
+  const daySelector = (
+    <DaySelector sMan={serviceMan} onclick={nextStep} fetchDay={fetchDay} />
+  );
+  const hourSelector = (
+    <HourSelector
+      sMan={serviceMan}
+      onclick={nextStep}
+      fetchHour={fetchHour}
+      day={day}
+    />
+  );
+  const Confirm = (
+    <AppointmentConfirm
+      sMan={serviceMan}
+      onclick={nextStep}
+      hour={hour}
+      day={day}
+    />
+  );
 
   const steps = [
     { label: "Select a Day", content: daySelector },
@@ -29,7 +54,6 @@ const ClientAppointmentPage = () => {
     const user = ref(getDatabase(), `users/${id}`);
     onValue(user, (snapshot) => {
       const data = snapshot.val();
-      console.log(data);
       setServiceMan(data);
     });
   }, [id]);
@@ -49,11 +73,11 @@ const ClientAppointmentPage = () => {
           {activeStep === steps.length ? (
             <Flex px={4} py={4} width="100%" flexDirection="column">
               <Heading fontSize="xl" textAlign="center">
-                Woohoo! All steps completed!
+                An email has been sent to confirm your appointment.
               </Heading>
-              <Button mx="auto" mt={6} size="sm" onClick={reset}>
-                Reset
-              </Button>
+              <Heading fontSize="xl" textAlign="center">
+                Check your inbox!{" "}
+              </Heading>
             </Flex>
           ) : (
             <Flex width="100%" justify="flex-end">

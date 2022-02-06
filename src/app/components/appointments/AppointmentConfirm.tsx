@@ -7,10 +7,13 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+import { set, ref, getDatabase } from "firebase/database";
 
 interface Props {
   sMan: any;
   onclick: Function;
+  hour: String;
+  day: String;
 }
 const AppointmentConfirm: FC<Props> = (props) => {
   const [fullName, setFullName] = useState<String>("");
@@ -19,6 +22,13 @@ const AppointmentConfirm: FC<Props> = (props) => {
 
   const confirmationEmail = () => {
     if (fullName !== "" && email !== "" && phone !== "") {
+      set(
+        ref(
+          getDatabase(),
+          `users/${props?.sMan.scheduleID}/appointments/${props.day}/${props.hour}`
+        ),
+        { fullName: fullName, email: email, phone: phone, confirmed: false }
+      );
       props.onclick();
     }
   };

@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import SignUpPage from "./app/pages/auth/SignUpPage";
 import UnLoggedHomePage from "./app/pages/UnLoggedHomePage";
-import LoggedHomePage from "./app/pages/LoggedHomePage";
+import LoggedHomePage from "./app/pages/user/LoggedHomePage";
 import UpdateSchedulePage from "./app/pages/user/UpdateSchedulePage";
 import { useAuth } from "./app/components/contexts/AuthContext";
 import ClientAppointmentPage from "./app/pages/client/ClientAppointmentPage";

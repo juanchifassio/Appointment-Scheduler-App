@@ -3,9 +3,9 @@ import { Box, Heading, Flex, Button } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { useParams } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
-import DaySelector from "../../components/appointments/DaySelector";
-import HourSelector from "../../components/appointments/HourSelector";
-import AppointmentConfirm from "../../components/appointments/AppointmentConfirm";
+import DaySelector from "../../components/appointments/appointmentBook/DaySelector";
+import HourSelector from "../../components/appointments/appointmentBook/HourSelector";
+import AppointmentConfirm from "../../components/appointments/appointmentBook/AppointmentConfirm";
 
 const ClientAppointmentPage = () => {
   const { nextStep, reset, prevStep, activeStep } = useSteps({

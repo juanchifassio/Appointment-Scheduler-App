@@ -33,7 +33,7 @@ const CalendarCarrousel = () => {
     var currentDate = moment(startDate);
     var stopdate = moment(stopDate);
     while (currentDate <= stopdate) {
-      dateArray.push(moment(currentDate).format("DD-MM-YYYY"));
+      dateArray.push(moment(currentDate).format("D-M-YYYY"));
       currentDate = moment(currentDate).add(1, "days");
     }
     return dateArray;
@@ -46,7 +46,7 @@ const CalendarCarrousel = () => {
   );
 
   return (
-    <Box mx={100}>
+    <Box>
       <Carousel responsive={responsive}>{dayCards}</Carousel>
     </Box>
   );

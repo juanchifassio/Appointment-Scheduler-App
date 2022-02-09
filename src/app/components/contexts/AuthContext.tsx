@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextType {
   logout: () => void;
   currentUser: any;
-  users: object;
+  users: any;
 }
 
 const AuthContext = createContext({});

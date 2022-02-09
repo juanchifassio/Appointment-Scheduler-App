@@ -29,17 +29,22 @@ const HourSelector: FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    if (props.sMan.appointments[props.day] !== undefined) {
-      var bookedHours = Object.keys(props.sMan.appointments[props.day]);
-      var scheduleHours = Object.values(props.sMan.schedule);
-      var dispHours = scheduleHours.filter((item: any) => {
-        return !bookedHours.includes(item);
-      });
-      setDispHours(dispHours);
+    if (props.sMan.appointments !== undefined) {
+      if (props.sMan.appointments[props.day] !== undefined) {
+        console.log(props.sMan.appointments[props.day]);
+        var bookedHours = Object.keys(props.sMan.appointments[props.day]);
+        var scheduleHours = Object.values(props.sMan.schedule);
+        var dispHours = scheduleHours.filter((item: any) => {
+          return !bookedHours.includes(item);
+        });
+        setDispHours(dispHours);
+      } else {
+        setDispHours(props.sMan.schedule);
+      }
     } else {
       setDispHours(props.sMan.schedule);
     }
-  }, []);
+  }, [props]);
 
   return (
     <>

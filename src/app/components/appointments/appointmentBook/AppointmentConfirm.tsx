@@ -27,7 +27,13 @@ const AppointmentConfirm: FC<Props> = (props) => {
           getDatabase(),
           `users/${props?.sMan.scheduleID}/appointments/${props.day}/${props.hour}`
         ),
-        { fullName: fullName, email: email, phone: phone, confirmed: false }
+        {
+          fullName: fullName,
+          email: email,
+          phone: phone,
+          confirmed: false,
+          hour: props.hour,
+        }
       );
       props.onclick();
     }
